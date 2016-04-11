@@ -1,0 +1,122 @@
+#!/bin/bash -eu
+
+RUN_DIR=/var/vcap/sys/run/setup_sdc
+LOG_DIR=/var/vcap/sys/log/setup_sdc
+JOB_DIR=/var/vcap/jobs/setup_sdc
+PKG_DIR=/var/vcap/packages/setup_sdc
+PIDFILE=$RUN_DIR/sdc.pid
+<% scaleio_sdc_bin = '/opt/emc/scaleio/setup_sdc/bin' %>
+SCALEIO_SDC_BIN=<%= scaleio_sdc_bin %>
+mdm_ip=<%= p('scaleio.mdm.ip') %>
+
+## Helper functions for testing SDS connectivity to SDC
+timestamp() {
+  date +"%T"
+}
+
+testsdsips ()
+{
+  $SCALEIO_SDC_BIN/drv_cfg --query_tgts | sed -n -e 's/.*Tgt IPs : //p' | sed -e 's/\[.].//g' | while read x
+  do
+    if testips $x
+    then return 0
+    else return 1
+    fi
+  done
+}
+
+testips ()
+{
+  for i in $*; do
+    if testip $i; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+testip ()
+{
+  /bin/ping -c1 -w1 $1 > /dev/null
+  return $?
+}
+ 
+case $1 in
+
+  start)
+    mkdir -p $SCALEIO_SDC_BIN
+    ln -s $PKG_DIR/* $SCALEIO_SDC_BIN
+
+    mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
+    sudo cat > /etc/ld.so.conf.d/setup_sdc.conf <<EOT
+/var/vcap/packages/libaio/lib
+/var/vcap/packages/libnuma/lib
+EOT
+    ldconfig
+
+    if [[ -z `lsmod | grep scini` ]]; then
+      sudo /sbin/insmod $SCALEIO_SDC_BIN/scini.ko
+    fi
+
+    sudo rm -f /dev/scini
+    sudo mknod /dev/scini c $(grep scini /proc/devices | head -1 | awk '{print $1}') 0
+
+    if [[ ! -e /var/lock/subsys/scini ]]; then
+      cat > $SCALEIO_SDC_BIN/drv_cfg.txt <<EOF
+ini_guid $(cat /proc/sys/kernel/random/uuid)
+mdm $mdm_ip
+EOF
+
+      $SCALEIO_SDC_BIN/drv_cfg --load_cfg_file $SCALEIO_SDC_BIN/drv_cfg.txt
+      $SCALEIO_SDC_BIN/drv_cfg --boot_wait
+      mkdir -p /var/lock/subsys
+      touch /var/lock/subsys/scini
+    fi
+
+    echo $$ > $PIDFILE
+
+    mkdir -p /dev/disk/by-id/
+
+    cat <<'EOF' > /etc/udev/rules.d/10-scaleio.rules
+KERNEL=="scini*[!0-9]", SUBSYSTEM=="block", PROGRAM="<%= scaleio_sdc_bin %>/drv_cfg --query_block_device_id --block_device /dev/%k", SYMLINK+="disk/by-id/emc-vol-%c"
+KERNEL=="scini*[0-9]", SUBSYSTEM=="block", PROGRAM="<%= scaleio_sdc_bin %>/drv_cfg --query_block_device_id --block_device /dev/%k", SYMLINK+="disk/by-id/emc-vol-%c-part%n"
+ACTION=="add", DEVPATH=="*scini*[!0-9]", RUN+="/bin/sh -c 'echo noop > /sys$DEVPATH/queue/scheduler'"
+ACTION=="add", DEVPATH=="*scini*[!0-9]", RUN+="/bin/sh -c 'echo 1024 > /sys$DEVPATH/queue/max_sectors_kb'"
+ACTION=="add", DEVPATH=="*scini*[!0-9]", RUN+="/bin/sh -c 'echo 512 > /sys$DEVPATH/queue/nr_requests'"
+EOF
+    service udev restart
+
+    if testsdsips; then
+      echo "$(timestamp) Successfully pinged SDS IP addresses :)" >> /var/vcap/sys/log/setup_sdc/log.txt
+    else
+      echo "$(timestamp) FAILED to ping SDS IP addresses: Check $SCALEIO_SDC_BIN/drv_cfg --query_tgts and make sure you have connectivity to SDS ips." >> /var/vcap/sys/log/setup_sdc/log.txt
+    fi
+
+    while true; do
+      sleep 5
+      $SCALEIO_SDC_BIN/drv_cfg --rescan
+      if testsdsips; then
+      else
+        echo "$(timestamp) FAILED to ping SDS IP addresses: Check $SCALEIO_SDC_BIN/drv_cfg --query_tgts and make sure you have connectivity to SDS ips." >> /var/vcap/sys/log/setup_sdc/log.txt
+      fi
+
+      $SCALEIO_SDC_BIN/drv_cfg --query_tgts
+
+    done
+    ;;
+  stop)
+    kill -9 `cat $PIDFILE`
+    rm -f $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: ctl {start|stop}"
+    ;;
+
+esac

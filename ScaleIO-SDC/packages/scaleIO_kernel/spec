@@ -1,0 +1,9 @@
+---
+name: scaleIO_kernel
+
+dependencies:
+- libaio
+- libnuma
+
+files:
+  - scaleIO_kernel/sdc.tar.gz # From ScaleIO

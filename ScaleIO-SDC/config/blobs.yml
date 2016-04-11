@@ -1,0 +1,29 @@
+---
+libaio/libaio.tar.gz:
+  object_id: 901835f2-fae1-4be5-bbd7-085e5c34c2ee
+  sha: 098fabb3e2000793c3b64587aa480642e2be40ca
+  size: 42271
+libnuma/autoconf.tar.gz:
+  object_id: 34bf9e11-0180-4f63-872d-c874916a6eee
+  sha: 562471cbcb0dd0fa42a76665acf0dbb68479b78a
+  size: 1927468
+libnuma/automake.tar.gz:
+  object_id: 07442e43-8fc1-4a7f-ba27-a3c9f3e2c761
+  sha: b5a840c7ec4321e78fdc9472e476263fa6614ca1
+  size: 2244206
+libnuma/libtool.tar.gz:
+  object_id: b44bec2b-abfb-4f78-8468-a9471fa72e23
+  sha: 25b6931265230a06f0fc2146df64c04e5ae6ec33
+  size: 1806697
+libnuma/libnuma.tar.gz:
+  object_id: 7bc4f1e2-a67f-446f-8aab-7449eb3255ab
+  sha: 00675527d54491310b1e4eba5a7278d99681aec1
+  size: 99040
+sdc/sdc.tar.gz:
+  object_id: 8910e7c2-ab59-48ea-973d-44147004ecd5
+  sha: 471641f8971eccaa45355b4015187f9eb9854721
+  size: 2485515
+rexray/rexray:
+  object_id: 2e2c7a6c-1050-4139-92ad-dd2954360253
+  sha: e4ad9588fae2c92ac376687568977247a19f3f03
+  size: 38847864

@@ -1,0 +1,4 @@
+#!/bin/bash -ex
+
+tar xf scaleIO_kernel/sdc.tar.gz
+cp -r drv_cfg scini.ko ${BOSH_INSTALL_TARGET}

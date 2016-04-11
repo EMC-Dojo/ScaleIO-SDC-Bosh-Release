@@ -1,0 +1,35 @@
+#!/bin/bash -exu
+
+tar xf libnuma/autoconf.tar.gz
+
+pushd autoconf-2.69
+  ./configure --prefix=${BOSH_INSTALL_TARGET}
+  make
+  make install
+  export PATH=${PATH}:${BOSH_INSTALL_TARGET}/bin
+popd
+
+tar xf libnuma/automake.tar.gz
+
+pushd automake-1.15
+  ./configure --prefix=${BOSH_INSTALL_TARGET}
+  make
+  make install
+popd
+
+tar xf libnuma/libtool.tar.gz
+
+pushd libtool-2.4.6
+  ./configure --prefix=${BOSH_INSTALL_TARGET}
+  make
+  make install
+popd
+
+tar xf libnuma/libnuma.tar.gz
+
+pushd numactl-2.0.10
+  ./autogen.sh
+  ./configure --prefix=${BOSH_INSTALL_TARGET}
+  make
+  make install
+popd

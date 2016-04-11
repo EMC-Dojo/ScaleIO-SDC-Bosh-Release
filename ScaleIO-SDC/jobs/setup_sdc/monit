@@ -1,0 +1,5 @@
+check process setup_sdc
+  with pidfile /var/vcap/sys/run/setup_sdc/sdc.pid
+  start program "/var/vcap/jobs/setup_sdc/bin/ctl start"
+  stop program "/var/vcap/jobs/setup_sdc/bin/ctl stop"
+  group vcap

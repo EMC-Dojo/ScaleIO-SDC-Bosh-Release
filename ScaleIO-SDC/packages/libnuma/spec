@@ -1,0 +1,10 @@
+---
+name: libnuma
+
+dependencies: []
+
+files:
+- libnuma/autoconf.tar.gz # From http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
+- libnuma/automake.tar.gz # From http://ftp.gnu.org/gnu/automake/automake-1.15.tar.gz
+- libnuma/libtool.tar.gz # From http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.gz
+- libnuma/libnuma.tar.gz # From ftp://oss.sgi.com/www/projects/libnuma/download/numactl-2.0.10.tar.gz

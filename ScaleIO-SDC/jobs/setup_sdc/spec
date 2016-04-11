@@ -1,0 +1,11 @@
+---
+name: setup_sdc
+templates:
+  ctl.erb: bin/ctl
+packages:
+- libaio
+- libnuma
+- scaleIO_kernel
+properties:
+  scaleio.mdm.ip:
+    description: 'IP address of the MDM primary server'
