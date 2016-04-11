@@ -19,11 +19,7 @@ libnuma/libnuma.tar.gz:
   object_id: 7bc4f1e2-a67f-446f-8aab-7449eb3255ab
   sha: 00675527d54491310b1e4eba5a7278d99681aec1
   size: 99040
-sdc/sdc.tar.gz:
+scaleIO_kernel/sdc.tar.gz:
   object_id: 8910e7c2-ab59-48ea-973d-44147004ecd5
   sha: 471641f8971eccaa45355b4015187f9eb9854721
   size: 2485515
-rexray/rexray:
-  object_id: 2e2c7a6c-1050-4139-92ad-dd2954360253
-  sha: e4ad9588fae2c92ac376687568977247a19f3f03
-  size: 38847864

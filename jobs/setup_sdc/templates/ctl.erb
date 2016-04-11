@@ -3,9 +3,9 @@
 RUN_DIR=/var/vcap/sys/run/setup_sdc
 LOG_DIR=/var/vcap/sys/log/setup_sdc
 JOB_DIR=/var/vcap/jobs/setup_sdc
-PKG_DIR=/var/vcap/packages/setup_sdc
+PKG_DIR=/var/vcap/packages/scaleIO_kernel
 PIDFILE=$RUN_DIR/sdc.pid
-<% scaleio_sdc_bin = '/opt/emc/scaleio/setup_sdc/bin' %>
+<% scaleio_sdc_bin = '/opt/emc/scaleio/sdc/bin' %>
 SCALEIO_SDC_BIN=<%= scaleio_sdc_bin %>
 mdm_ip=<%= p('scaleio.mdm.ip') %>
 
@@ -101,6 +101,7 @@ EOF
       sleep 5
       $SCALEIO_SDC_BIN/drv_cfg --rescan
       if testsdsips; then
+        echo "" > /dev/null
       else
         echo "$(timestamp) FAILED to ping SDS IP addresses: Check $SCALEIO_SDC_BIN/drv_cfg --query_tgts and make sure you have connectivity to SDS ips." >> /var/vcap/sys/log/setup_sdc/log.txt
       fi
