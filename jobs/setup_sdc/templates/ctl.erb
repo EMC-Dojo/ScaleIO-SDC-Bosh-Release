@@ -104,6 +104,8 @@ EOF
         echo "" > /dev/null
       else
         echo "$(timestamp) FAILED to ping SDS IP addresses: Check $SCALEIO_SDC_BIN/drv_cfg --query_tgts and make sure you have connectivity to SDS ips." >> /var/vcap/sys/log/setup_sdc/log.txt
+        kill -9 `cat $PIDFILE`
+        rm -f $PIDFILE
       fi
 
       $SCALEIO_SDC_BIN/drv_cfg --query_tgts
