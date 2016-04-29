@@ -40,12 +40,12 @@ testip ()
   /bin/ping -c1 -w1 $1 > /dev/null
   return $?
 }
- 
+
 case $1 in
 
   start)
     mkdir -p $SCALEIO_SDC_BIN
-    ln -s $PKG_DIR/* $SCALEIO_SDC_BIN
+    ln -f -s $PKG_DIR/* $SCALEIO_SDC_BIN
 
     mkdir -p $LOG_DIR
     chown -R vcap:vcap $LOG_DIR
