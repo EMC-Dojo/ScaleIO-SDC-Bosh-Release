@@ -5,17 +5,15 @@ LOG_DIR=/var/vcap/sys/log/setup_sdc
 JOB_DIR=/var/vcap/jobs/setup_sdc
 PKG_DIR=/var/vcap/packages/scaleIO_kernel
 PIDFILE=$RUN_DIR/sdc.pid
-<% scaleio_sdc_bin = '/opt/emc/scaleio/sdc/bin' %>
+  <% scaleio_sdc_bin = '/opt/emc/scaleio/sdc/bin' %>
 SCALEIO_SDC_BIN=<%= scaleio_sdc_bin %>
-mdm_ip=<%= p('scaleio.mdm.ip') %>
 
 ## Helper functions for testing SDS connectivity to SDC
 timestamp() {
   date +"%T"
 }
 
-testsdsips ()
-{
+testsdsips () {
   $SCALEIO_SDC_BIN/drv_cfg --query_tgts | sed -n -e 's/.*Tgt IPs : //p' | sed -e 's/\[.].//g' | while read x
   do
     if testips $x
@@ -25,8 +23,7 @@ testsdsips ()
   done
 }
 
-testips ()
-{
+testips () {
   for i in $*; do
     if testip $i; then
       return 0
@@ -35,14 +32,12 @@ testips ()
   return 1
 }
 
-testip ()
-{
+testip () {
   /bin/ping -c1 -w1 $1 > /dev/null
   return $?
 }
 
 case $1 in
-
   start)
     mkdir -p $SCALEIO_SDC_BIN
     ln -f -s $PKG_DIR/* $SCALEIO_SDC_BIN
@@ -69,7 +64,9 @@ EOT
     if [[ ! -e /var/lock/subsys/scini ]]; then
       cat > $SCALEIO_SDC_BIN/drv_cfg.txt <<EOF
 ini_guid $(cat /proc/sys/kernel/random/uuid)
-mdm $mdm_ip
+<% p('scaleio.mdm.ips').each do |ip| %>
+mdm <%= ip %>
+<% end %>
 EOF
 
       $SCALEIO_SDC_BIN/drv_cfg --load_cfg_file $SCALEIO_SDC_BIN/drv_cfg.txt
@@ -109,13 +106,12 @@ EOF
       fi
 
       $SCALEIO_SDC_BIN/drv_cfg --query_tgts
-
     done
     ;;
+
   stop)
     kill -9 `cat $PIDFILE`
     rm -f $PIDFILE
-
     ;;
 
   *)

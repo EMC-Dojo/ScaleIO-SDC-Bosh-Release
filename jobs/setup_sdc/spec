@@ -7,5 +7,5 @@ packages:
 - libnuma
 - scaleIO_kernel
 properties:
-  scaleio.mdm.ip:
+  scaleio.mdm.ips:
     description: 'IP address of the MDM primary server'
