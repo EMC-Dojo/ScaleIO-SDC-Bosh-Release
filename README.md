@@ -21,22 +21,21 @@ ScaleIO contains 3 major components:
 In order to set up CF-Persistence, the SDC, RexRay, and Volman bosh releases need to colocate in Diego Cells VMs. More documentation coming soon.
 
 ###Deploying Scaleio SDC release
-1. Git clone this project into your working directory
+* Git clone this project into your working directory
 ```
 cd ~/workspace
 git clone https://github.com/EMC-CMD/ScaleIO-SDC-Bosh-Release
 cd ~/workspace/ScaleIO-SDC-Bosh-Release
 ```
-
-2. Upload Bosh stemcell
+* Upload Bosh stemcell
 ```
 bosh upload stemcell https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3215
 ```
-3. Use manifest from template folder
+* Use manifest from template folder
 
 Please refer to examples directory to see manifest template and fill in the information you want.
 
-4. Create, upload, and deploy sdc release
+* Create, upload, and deploy sdc release
 ```
 bosh deployment {PATH_TO_YOUR_MANIFEST}
 bosh -n create release --force &&
