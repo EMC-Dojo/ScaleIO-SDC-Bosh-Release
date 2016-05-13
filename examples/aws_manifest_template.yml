@@ -1,0 +1,72 @@
+---
+name: ${DEPLOYMENT_NAME}
+director_uuid: $(bosh status --uuid)
+
+releases:
+- name: scaleio-sdc-bosh-release
+  version: latest
+
+disk_pools:
+- name: disks
+  disk_size: 20_000
+  cloud_properties: {type: gp2}
+
+resource_pools:
+- name: vms
+  network: private
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
+  cloud_properties:
+    instance_type: m3.medium
+    ephemeral_disk: {size: 25_000, type: gp2}
+    availability_zone: us-east-1a
+
+networks:
+- name: private
+  type: manual
+  subnets:
+  - range: {IP_RANGE}
+    gateway: {GATEWAY_IP}
+    dns: [{DNS_IP}]
+    reserved:
+    - {LOWER_IP} - {HIGHER_IP}
+    static:
+    - {STATIC_IP}
+    cloud_properties:
+      subnet: ${AWS_SUBNET_ID}
+      security_groups:
+        - ${AWS_SECURITY_GROUP}
+
+jobs:
+- name: scaleio-sdc-with-rexray
+  instances: 1
+  templates:
+  - {name: setup_sdc, release: scaleio-sdc-bosh-release}
+  resource_pool: vms
+  networks:
+  - name: private
+    static_ips: [{STATIC_IP}]
+    default: [dns, gateway]
+  properties:
+    network_name: private
+
+properties:
+  scaleio:
+    mdm:
+      ips: ${SCALEIO_MDM_IPS}
+
+compilation:
+  workers: 1
+  network: private
+  reuse_compilation_vms: true
+  cloud_properties:
+    name: random
+    instance_type: m3.medium
+    availability_zone: us-east-1a
+
+update:
+  canaries: 1
+  max_in_flight: 3
+  canary_watch_time: 30000-600000
+  update_watch_time: 5000-600000
