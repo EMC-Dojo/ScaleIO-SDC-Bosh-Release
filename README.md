@@ -47,5 +47,5 @@ bosh -n deploy
 - Slack Channel:
   - Organization: <http://codecommunity.slack.com>
   - Channel: `#project-rexray`
-- Contact: [Victor Fong](mailto:victor.fong@emc.com) [@EMCDojo](https://twitter.com/hashtag/emcdojo)
+- Contact: [Email EMC Dojo](mailto:EMCDojo@emc.com) [@EMCDojo](https://twitter.com/hashtag/emcdojo)
 - Blog: [EMC Dojo Blog](dojoblog.emc.com)
