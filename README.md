@@ -46,4 +46,4 @@ bosh -n deploy
 ###Contact
 - Email: [EMCDojo@emc.com](mailto:EMCDojo@emc.com) 
 - Twitter: [@EMCDojo](https://twitter.com/hashtag/emcdojo)
-- Blog: [EMC Dojo Blog](dojoblog.emc.com)
+- Blog: [EMC Dojo Blog](http://dojoblog.emc.com)
