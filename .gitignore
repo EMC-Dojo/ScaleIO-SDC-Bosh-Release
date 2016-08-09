@@ -1,6 +1,5 @@
 config/private.yml
 config/dev.yml
-templates
 blobs
 .blobs
 .dev_builds

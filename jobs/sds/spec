@@ -1,0 +1,11 @@
+---
+name: sds
+templates:
+  ctl.erb: bin/ctl
+packages:
+- libaio
+- libnuma
+- sds
+properties:
+  scaleio.mdm.ips:
+    description: 'IP address of the MDM primary server'

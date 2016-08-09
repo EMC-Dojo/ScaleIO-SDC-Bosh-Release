@@ -1,0 +1,61 @@
+#!/bin/bash
+
+RUN_DIR=/var/vcap/sys/run/sds
+LOG_DIR=/var/vcap/sys/log/sds
+JOB_DIR=/var/vcap/jobs/sds
+PKG_DIR=/var/vcap/packages/sds/sds
+PIDFILE=$RUN_DIR/sds.pid
+
+pid_guard() {
+  pidfile=$1
+  name=$2
+
+  if [ -f "$pidfile" ]; then
+    pid=$(head -1 "$pidfile")
+
+    if [ -n "$pid" ] && [ -e /proc/$pid ]; then
+      echo "$name is already running, please stop it first"
+      exit 1
+    fi
+
+    echo "Removing stale pidfile..."
+    rm $pidfile
+  fi
+}
+
+case $1 in
+
+  start)
+    mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
+    mkdir -p $JOB_DIR/cfg
+    touch $JOB_DIR/cfg/sds.conf
+
+    pid_guard $PIDFILE "ScaleIO SDS"
+
+    sudo cat > /etc/ld.so.conf.d/sds.conf <<EOT
+/var/vcap/packages/libaio/lib
+/var/vcap/packages/libnuma/lib
+EOT
+    ldconfig
+
+    mkdir -p /var/vcap/store/
+    truncate -s 100GB /var/vcap/store/scaleIO_Volume
+
+
+    echo $$ > $PIDFILE
+    exec $PKG_DIR/sds-2.0.6035.0 --log_dir=$LOG_DIR --conf_file=$JOB_DIR/cfg/sds.conf
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+    ;;
+
+  *)
+    echo "Usage: sds_ctl {start|stop}" ;;
+
+esac
