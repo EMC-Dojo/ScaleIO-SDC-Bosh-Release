@@ -1,0 +1,39 @@
+---
+packages:
+- name: libaio
+  version: 0c8709d40ad7bc0e7d8cfb71ea6de4bdc038ff41
+  fingerprint: 0c8709d40ad7bc0e7d8cfb71ea6de4bdc038ff41
+  sha1: c4fc23b30a442849cf4529259894ef7cf7b2c9df
+  dependencies: []
+- name: libnuma
+  version: f62373acde6c37fbecaf97889c6d27c796b2c276
+  fingerprint: f62373acde6c37fbecaf97889c6d27c796b2c276
+  sha1: 5aad39bfb5e294780a06df2bf4fc0847734bdad3
+  dependencies: []
+- name: scaleIO_kernel
+  version: 11c3a3a09b81790987b65505ebfc3d039a6c3477
+  fingerprint: 11c3a3a09b81790987b65505ebfc3d039a6c3477
+  sha1: 017e2d37acbf7ed3f9b1726e689eb1cb9c2b81f9
+  dependencies:
+  - libaio
+  - libnuma
+- name: sds
+  version: 7282602f3b4e295f5de60af4d3917b1a7e0be5a3
+  fingerprint: 7282602f3b4e295f5de60af4d3917b1a7e0be5a3
+  sha1: 273506fff8f88777aeca39e3b98ec5c83a1b3223
+  dependencies:
+  - libaio
+  - libnuma
+jobs:
+- name: sds
+  version: d2dfcf32ae88833b5e85e330749e91bd82d9c42d
+  fingerprint: d2dfcf32ae88833b5e85e330749e91bd82d9c42d
+  sha1: 45dceb4014316c5da86c7f3d1eff616e37cf892f
+- name: setup_sdc
+  version: e96d4ecded30c7578b9eddbf80874033cf17bec3
+  fingerprint: e96d4ecded30c7578b9eddbf80874033cf17bec3
+  sha1: 7f1ba0fb51f3a0f8b578ade303e328f93f6ffd28
+commit_hash: 30b011b0
+uncommitted_changes: true
+name: scaleio-bosh-release
+version: '1'

@@ -1,0 +1,5 @@
+check process sds
+  with pidfile /var/vcap/sys/run/sds/sds.pid
+  start program "/var/vcap/jobs/sds/bin/ctl start"
+  stop program "/var/vcap/jobs/sds/bin/ctl stop"
+  group vcap

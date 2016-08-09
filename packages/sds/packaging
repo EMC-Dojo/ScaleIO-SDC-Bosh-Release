@@ -1,0 +1,4 @@
+#!/bin/bash -ex
+
+tar xzf sds/sds.tar.gz
+cp -r sds ${BOSH_INSTALL_TARGET}
