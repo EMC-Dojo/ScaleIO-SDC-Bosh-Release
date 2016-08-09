@@ -23,3 +23,7 @@ scaleIO_kernel/sdc.tar.gz:
   object_id: 8910e7c2-ab59-48ea-973d-44147004ecd5
   sha: 471641f8971eccaa45355b4015187f9eb9854721
   size: 2485515
+sds/sds.tar.gz:
+  object_id: ae644764-c3f5-4c01-9772-f25309e3da9d
+  sha: 463995050dfaea24a78aa995d44354ed6558b1f4
+  size: 4604776

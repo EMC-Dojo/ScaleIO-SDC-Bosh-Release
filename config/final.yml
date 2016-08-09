@@ -1,5 +1,5 @@
 ---
-final_name: scaleio-sdc-bosh-release
+final_name: scaleio-boshrelease
 blobstore:
   provider: s3
   options:
