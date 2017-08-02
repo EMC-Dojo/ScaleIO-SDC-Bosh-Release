@@ -1,4 +1,4 @@
-###ScaleIO Bosh Release
+### ScaleIO Bosh Release
 ScaleIO contains 3 major components:
  - MDM - Management component
  - SDS - Storage component
@@ -6,7 +6,7 @@ ScaleIO contains 3 major components:
 
  This Bosh release only contains the SDC, which is required to be placed in the client VM in order to access volumes hosted in ScaleIO.
 
-###Creating Bosh Release
+### Creating Bosh Release
 
  1. Obtain code from Github:
  2. Go into the directory:
@@ -17,10 +17,10 @@ ScaleIO contains 3 major components:
  cd ScaleIO-SDC-Bosh-Release
  bosh create release
  ```
-###About CF-Persistence
+### About CF-Persistence
 In order to set up CF-Persistence, the SDC, RexRay, and Volman bosh releases need to colocate in Diego Cells VMs. More documentation coming soon.
 
-###Deploying Scaleio SDC release
+### Deploying Scaleio SDC release
 * Git clone this project into your working directory
 ```
 cd ~/workspace
@@ -43,7 +43,7 @@ bosh -n upload release &&
 bosh -n deploy
 ```
 
-###Contact
+### Contact
 - Email: [EMCDojo@emc.com](mailto:EMCDojo@emc.com) 
 - Twitter: [@EMCDojo](https://twitter.com/hashtag/emcdojo)
 - Blog: [EMC Dojo Blog](http://dojoblog.emc.com)
